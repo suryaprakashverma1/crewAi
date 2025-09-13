@@ -1,8 +1,13 @@
 from crewai import Agent, Task, Crew
-import os
+from crewai.llm import LLM
 
-os.environ["MODEL"] = "ollama/llama3.1:latest"
-os.environ["LLM_BASE_URL"] = "http://host.docker.internal:11434"
+# Tell CrewAI to use Ollama as backend
+ollama_llm = LLM(
+    model="ollama/llama3.1:latest",   # specify provider + model
+    base_url="http://host.docker.internal:11434" # point to your running Ollama server
+    #base_url="http://localhost:11434"
+)
+
 
 sales_rep_agent = Agent(
     role="Sales Representative",
@@ -19,6 +24,7 @@ sales_rep_agent = Agent(
         "Your work is crucial in paving the way "
         "for meaningful engagements and driving the company's growth."
     ),
+     llm=ollama_llm,
     allow_delegation=False,
     verbose=True
 )
@@ -37,6 +43,7 @@ lead_sales_rep_agent = Agent(
         "into action, guiding leads through the journey "
         "from curiosity to commitment."
     ),
+     llm=ollama_llm,
     allow_delegation=False,
     verbose=True
 )
