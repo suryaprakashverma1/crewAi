@@ -1,6 +1,14 @@
 from crewai import Agent, Task, Crew
 from crewai.llm import LLM
 
+import os
+os.environ["SERPER_API_KEY"] = "apikey"
+
+os.environ["OPENAI_API_KEY"] = "apikey"
+
+import warnings
+warnings.filterwarnings("ignore", category=UserWarning)
+
 # Tell CrewAI to use Ollama as backend
 ollama_llm = LLM(
     model="ollama/llama3.1:latest",   # specify provider + model
@@ -137,3 +145,28 @@ personalized_outreach_task = Task(
     tools=[sentiment_analysis_tool, search_tool],
     agent=lead_sales_rep_agent,
 )
+
+crew = Crew(
+    agents=[sales_rep_agent, 
+            lead_sales_rep_agent],
+    
+    tasks=[lead_profiling_task, 
+           personalized_outreach_task],
+	
+    verbose=True,
+	memory=True
+)
+
+
+inputs = {
+    "lead_name": "DeepLearningAI",
+    "industry": "Online Learning Platform",
+    "key_decision_maker": "Andrew Ng",
+    "position": "CEO",
+    "milestone": "product launch"
+}
+
+result = crew.kickoff(inputs=inputs)
+
+from IPython.display import Markdown
+Markdown(result)
