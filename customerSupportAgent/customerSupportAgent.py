@@ -2,9 +2,9 @@ from crewai import Agent, Task, Crew
 from crewai.llm import LLM
 
 import os
-os.environ["SERPER_API_KEY"] = "apikey"
+os.environ["SERPER_API_KEY"] = "key"
 
-os.environ["OPENAI_API_KEY"] = "apikey"
+os.environ["OPENAI_API_KEY"] = "key"
 
 import warnings
 warnings.filterwarnings("ignore", category=UserWarning)
@@ -16,6 +16,7 @@ ollama_llm = LLM(
     #base_url="http://localhost:11434"
 )
 
+openai_llm = LLM(model="gpt-4o-mini")  # or gpt-4o
 
 sales_rep_agent = Agent(
     role="Sales Representative",
@@ -32,8 +33,8 @@ sales_rep_agent = Agent(
         "Your work is crucial in paving the way "
         "for meaningful engagements and driving the company's growth."
     ),
-     llm=ollama_llm,
-    allow_delegation=False,
+     llm=openai_llm,
+    allow_delegation=True,
     verbose=True
 )
 
@@ -52,7 +53,7 @@ lead_sales_rep_agent = Agent(
         "from curiosity to commitment."
     ),
      llm=ollama_llm,
-    allow_delegation=False,
+    allow_delegation=True,
     verbose=True
 )
 
@@ -153,7 +154,7 @@ crew = Crew(
     tasks=[lead_profiling_task, 
            personalized_outreach_task],
 	
-    verbose=True,
+    verbose=False,
 	memory=True
 )
 
@@ -168,5 +169,5 @@ inputs = {
 
 result = crew.kickoff(inputs=inputs)
 
-from IPython.display import Markdown
-Markdown(result)
+#from IPython.display import Markdown
+#Markdown(result)
