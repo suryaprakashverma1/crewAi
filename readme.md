@@ -1,3 +1,4 @@
+crewAi docs: https://www.crewai.com/    click on blogs and we have all the documentations.
 Dwonload docker and then go to running the crewAi docker image: https://hub.docker.com/r/seemeai/crewai
 
 run the image from docker UI: remember you should have an open API key, if you don't have local llm model setup for this.
